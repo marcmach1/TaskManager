@@ -69,3 +69,4 @@
 /Users/marcmach/Documents/VisualStudioProjects/MeuProjeto/TaskManager/obj/Debug/net9.0/TaskManager.pdb
 /Users/marcmach/Documents/VisualStudioProjects/MeuProjeto/TaskManager/obj/Debug/net9.0/TaskManager.genruntimeconfig.cache
 /Users/marcmach/Documents/VisualStudioProjects/MeuProjeto/TaskManager/obj/Debug/net9.0/ref/TaskManager.dll
+/Users/marcmach/Documents/VisualStudioProjects/MeuProjeto/TaskManager/obj/Debug/net9.0/TaskManager.sourcelink.json
