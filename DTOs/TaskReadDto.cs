@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-// TaskReadDto.cs
+
 namespace TaskManager.DTOs
 {
     public class TaskReadDto
@@ -10,5 +10,6 @@ namespace TaskManager.DTOs
         [Required(ErrorMessage = "Title is required")]
         public required string Title { get; set; }  
         public bool IsCompleted { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }
