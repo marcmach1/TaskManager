@@ -1,35 +1,38 @@
 using TaskManager.Models;
 using TaskManager.DTOs;
-using System;
 
-namespace TaskManager.Extensions
+namespace TaskManager.Extensions;
+
+public static class TaskItemExtensions
 {
-    public static class TaskItemExtensions
+    public static TaskItem ToTaskItem(this TaskCreateDto dto)
     {
-        public static TaskReadDto ToReadDto(this TaskItem task)
+        return new TaskItem
         {
-            return new TaskReadDto
-            {
-                Id = task.Id,
-                Title = task.Title,
-                IsCompleted = task.IsCompleted
-            };
-        }
+            Title = dto.Title,
+            Description = dto.Description,
+            IsCompleted = false
+        };
+    }
 
-        public static TaskItem ToTaskItem(this TaskCreateDto dto)
+    public static TaskItem ToTaskItem(this TaskUpdateDto dto)
+    {
+        return new TaskItem
         {
-            return new TaskItem
-            {
-                Title = dto.Title,
-                IsCompleted = false,
-                CreatedAt = DateTime.UtcNow
-            };
-        }
+            Title = dto.Title,
+            Description = dto.Description,
+            IsCompleted = dto.IsCompleted
+        };
+    }
 
-        public static void UpdateFromDto(this TaskItem task, TaskUpdateDto dto)
+    public static TaskReadDto ToReadDto(this TaskItem task)
+    {
+        return new TaskReadDto
         {
-            task.Title = dto.Title;
-            task.IsCompleted = dto.IsCompleted;
-        }
+            Id = task.Id,
+            Title = task.Title,
+            Description = task.Description,
+            IsCompleted = task.IsCompleted
+        };
     }
 }

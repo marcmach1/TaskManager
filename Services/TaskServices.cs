@@ -13,39 +13,53 @@ public class TaskService : ITaskService
         _db = db;
     }
 
-    public async Task<List<TaskItem>> GetAllAsync() =>
-        await _db.Tasks.ToListAsync();
+    public async Task<IEnumerable<TaskItem>> GetAllAsync()
+    {
+        return await _db.Tasks.ToListAsync();
+    }
 
     public async Task<TaskItem?> GetByIdAsync(int id) =>
         await _db.Tasks.FindAsync(id);
 
     public async Task<TaskItem> CreateAsync(TaskItem task)
-    {
-        _db.Tasks.Add(task);
-        await _db.SaveChangesAsync();
-        return task;
-    }
+{
+    ArgumentNullException.ThrowIfNull(task);
 
-    public async Task<bool> UpdateAsync(int id, TaskItem updatedTask)
+    if (string.IsNullOrWhiteSpace(task.Title))
+       throw new InvalidOperationException("Task title cannot be empty");
+
+    _db.Tasks.Add(task);
+    await _db.SaveChangesAsync();
+
+    return task;
+}
+
+    public async Task<TaskItem> UpdateAsync(int id, TaskItem updatedTask)
     {
-        var task = await _db.Tasks.FindAsync(id);
-        if (task == null) return false;
+        ArgumentNullException.ThrowIfNull(updatedTask);
+
+        var task = await _db.Tasks.FindAsync(id)
+            ?? throw new KeyNotFoundException("Task not found");
+
+        if (string.IsNullOrWhiteSpace(updatedTask.Title))
+            throw new ArgumentException("Task title cannot be empty", nameof(updatedTask));
 
         task.Title = updatedTask.Title;
         task.Description = updatedTask.Description;
         task.IsCompleted = updatedTask.IsCompleted;
 
         await _db.SaveChangesAsync();
-        return true;
+
+        return task;
     }
 
-    public async Task<bool> DeleteAsync(int id)
+    public async Task DeleteAsync(int id)
     {
-        var task = await _db.Tasks.FindAsync(id);
-        if (task == null) return false;
+        var task = await _db.Tasks.FindAsync(id)
+            ?? throw new KeyNotFoundException("Task not found");
 
         _db.Tasks.Remove(task);
         await _db.SaveChangesAsync();
-        return true;
     }
+
 }

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/marcmach/Documents/VisualStudioProjects/MeuProjeto/TaskManager/TaskManager.csproj": {}
+    "/Users/marcmach/Documents/MeuProjeto/src/TaskManager/TaskManager.csproj": {}
   },
   "projects": {
-    "/Users/marcmach/Documents/VisualStudioProjects/MeuProjeto/TaskManager/TaskManager.csproj": {
+    "/Users/marcmach/Documents/MeuProjeto/src/TaskManager/TaskManager.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/marcmach/Documents/VisualStudioProjects/MeuProjeto/TaskManager/TaskManager.csproj",
+        "projectUniqueName": "/Users/marcmach/Documents/MeuProjeto/src/TaskManager/TaskManager.csproj",
         "projectName": "TaskManager",
-        "projectPath": "/Users/marcmach/Documents/VisualStudioProjects/MeuProjeto/TaskManager/TaskManager.csproj",
+        "projectPath": "/Users/marcmach/Documents/MeuProjeto/src/TaskManager/TaskManager.csproj",
         "packagesPath": "/Users/marcmach/.nuget/packages/",
-        "outputPath": "/Users/marcmach/Documents/VisualStudioProjects/MeuProjeto/TaskManager/obj/",
+        "outputPath": "/Users/marcmach/Documents/MeuProjeto/src/TaskManager/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/marcmach/.nuget/NuGet/NuGet.Config"

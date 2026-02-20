@@ -19,50 +19,82 @@ public class TasksController : ControllerBase
 
     // GET: api/tasks
     [HttpGet]
-    public async Task<IEnumerable<TaskReadDto>> Get() =>
-        (await _service.GetAllAsync()).Select(t => t.ToReadDto());
+    public async Task<IEnumerable<TaskReadDto>> Get()
+    {
+        var tasks = await _service.GetAllAsync();
+        return tasks.Select(t => t.ToReadDto());
+    }
 
     // GET: api/tasks/{id}
     [HttpGet("{id}")]
     public async Task<ActionResult<TaskReadDto>> Get(int id)
     {
         var task = await _service.GetByIdAsync(id);
-        if (task == null) return NotFound();
-        return task.ToReadDto();
+        if (task == null)
+            return NotFound();
+
+        return Ok(task.ToReadDto());
     }
 
     // POST: api/tasks
     [HttpPost]
     public async Task<ActionResult<TaskReadDto>> Post([FromBody] TaskCreateDto dto)
     {
-        if (dto == null || string.IsNullOrEmpty(dto.Title))
+        if (dto == null || string.IsNullOrWhiteSpace(dto.Title))
             return BadRequest("Title is required.");
 
-        var task = dto.ToTaskItem();                  // converte DTO para Model
-        var created = await _service.CreateAsync(task);
-        return CreatedAtAction(nameof(Get), new { id = created.Id }, created.ToReadDto());
+        try
+        {
+            var task = dto.ToTaskItem();
+            var created = await _service.CreateAsync(task);
+
+            return CreatedAtAction(
+                nameof(Get),
+                new { id = created.Id },
+                created.ToReadDto());
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     // PUT: api/tasks/{id}
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(int id, [FromBody] TaskUpdateDto dto)
     {
-        var task = await _service.GetByIdAsync(id);
-        if (task == null) return NotFound();
+        if (dto == null)
+            return BadRequest("Invalid data.");
 
-        task.UpdateFromDto(dto);                      // atualiza Model com DTO
-        var updated = await _service.UpdateAsync(id, task);
-        if (!updated) return NotFound();
+        try
+        {
+            var task = dto.ToTaskItem();
+            await _service.UpdateAsync(id, task);
 
-        return NoContent();
+            return NoContent();
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound();
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     // DELETE: api/tasks/{id}
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var deleted = await _service.DeleteAsync(id);
-        if (!deleted) return NotFound();
-        return NoContent();
+        try
+        {
+            await _service.DeleteAsync(id);
+            return NoContent();
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound();
+        }
     }
 }
